@@ -66,6 +66,8 @@ export const ModuleArea = function(elem) {
 			LiveComposer.Builder.UI.stopScroller();
 			jQuery('body').removeClass('dslca-drag-in-progress').addClass('dslca-drag-not-in-progress');
 			jQuery('body', LiveComposer.Builder.PreviewAreaWindow.document).removeClass('dslca-drag-in-progress').addClass('dslca-drag-not-in-progress');
+			LiveComposer.Builder.History.unlock();
+			parent.LiveComposer.Builder.Actions.saveState();
 		},
 
 		// Element is dropped into the list from another list
@@ -94,6 +96,8 @@ export const ModuleArea = function(elem) {
 			// evt.stopPropagation(); return false;
 
 			window.dslc_show_publish_button();
+			LiveComposer.Builder.History.unlock();
+			parent.LiveComposer.Builder.Actions.saveState();
 		},
 
 		// Called by any change to the list (add / update / remove)

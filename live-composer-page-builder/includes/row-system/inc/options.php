@@ -68,6 +68,32 @@ function dslc_row_register_options() {
 			),
 		),
 	);
+	$dslc_var_row_options['css_module_section_width_unit'] = array(
+		'id' => 'css_module_section_width_unit',
+		'std' => 'px',
+		'label' => __( 'Width Unit', 'live-composer-page-builder' ),
+		'type' => 'select',
+		'choices' => array(
+			array(
+				'label' => 'px',
+				'value' => 'px',
+			),
+			array(
+				'label' => '%',
+				'value' => '%',
+			),
+		),
+	);
+	$dslc_var_row_options['css_module_section_width'] = array(
+		'id' => 'css_module_section_width',
+		'std' => '',
+		'label' => __( 'Width', 'live-composer-page-builder' ),
+		'type' => 'slider',
+		'affect_on_change_rule' => 'width',
+		'ext' => 'px',
+		'min' => -2000,
+		'max' => 2000,
+	);
 
 	$dslc_var_row_options['columns_spacing'] = array(
 		'id' => 'columns_spacing',
@@ -84,6 +110,61 @@ function dslc_row_register_options() {
 				'value' => 'nospacing',
 			),
 		),
+	);
+	$dslc_var_row_options['alignment_group_open'] = array(
+		'label' => __( 'Alignment', 'live-composer-page-builder' ),
+		'id' => 'alignment_group_open',
+		'type' => 'group',
+		'action' => 'open',
+	);
+
+	$dslc_var_row_options['valign'] = array(
+		'id' => 'valign',
+		'std' => 'top',
+		'label' => __( 'Vertical Alignment', 'live-composer-page-builder' ),
+		'type' => 'select',
+		'choices' => array(
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'value' => 'top',
+			),
+			array(
+				'label' => __( 'Middle', 'live-composer-page-builder' ),
+				'value' => 'middle',
+			),
+			array(
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
+				'value' => 'bottom',
+			),
+		),
+	);
+
+	$dslc_var_row_options['halign'] = array(
+		'id' => 'halign',
+		'std' => 'left',
+		'label' => __( 'Horizontal Alignment', 'live-composer-page-builder' ),
+		'type' => 'select',
+		'choices' => array(
+			array(
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'value' => 'start',
+			),
+			array(
+				'label' => __( 'Center', 'live-composer-page-builder' ),
+				'value' => 'center',
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'value' => 'end',
+			),
+		),
+	);
+
+	$dslc_var_row_options['alignment_group_close'] = array(
+		'label' => __( 'Alignment', 'live-composer-page-builder' ),
+		'id' => 'alignment_group_close',
+		'type' => 'group',
+		'action' => 'close',
 	);
 
 	// ============================================================

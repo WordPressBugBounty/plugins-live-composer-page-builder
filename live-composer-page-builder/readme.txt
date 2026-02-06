@@ -1,16 +1,18 @@
 === Live Composer - Free WordPress Website Builder  ===
 Contributors: LiveComposer
 Tags: page builder, landing page builder, frontend page builder, drag and drop page builder, website builder
-Requires at least: 4.7
-Tested up to: 6.7
-Stable tag: 1.5.53
+Requires at least: 6.0
+Tested up to: 6.9
+Requires PHP: 7.4
+Stable tag: 2.1.3
 License: GPLv3
 
 Page builder for WordPress with drag and drop header/footer editing, responsive settings, and animations. Compatible with Gutenberg block editor.
 
 == Description ==
 
-https://www.youtube.com/watch?v=eyW1iRP1L2s
+https://www.youtube.com/watch?v=aVx1yGMdxKY
+
 
 = Open Source WordPress Website Builder =
 
@@ -203,9 +205,80 @@ If you're migrating from another page builder, compatibility for content transfe
 * 🦊 [Check out our WooCommerce Page Builder Extension](https://livecomposerplugin.com/downloads/woocommerce-page-builder/?utm_source=wp-admin&utm_medium=changelog&utm_campaign=woo-integration)
 * 👀 [We keep updating and improving our extensions pack](https://livecomposerplugin.com/downloads/extensions/?utm_source=wp-admin&utm_medium=changelog&utm_campaign=add-ons) ACF + CPT + MegaMenu + 9 more add-ons.
 
+= 2.1.3 - February 04 2026 =
+* Added a Section module for rendering custom section designs.
+* Added a Link module for posts linking.
+* Improved the Excerpt module: added option to show post content when no excerpt is available, with configurable word limit.
+* Enhanced Loops module functionality.
+* Fixed minor issues and bugs in modules.
+
+= 2.1.2 - January 29 2026 =
+* Reverted changes from Release 2.1.0
+
+= 2.1.1 - January 29 2026 =
+* Minor bug fixes
+
+= 2.1.0 - January 28 2026 =
+* Added a Section module for rendering custom section designs.
+* Added a Link module for posts linking
+* Improved the Excerpt module: added option to show post content when no excerpt is available, with configurable word limit.
+* Fixed minor issues and bugs in modules.
+
+
+= 2.0.9 - January 21 2026 =
+* Fixed issues related to page design loading.
+* Fixed minor UI issues in the color picker.
+* Added a Loops module for rendering post loops with custom designs.
+* Added support for inserting rows between existing rows.
+* Reduced module and row opacity when hidden for specific device types to visually indicate responsive visibility.
+* Added Undo and Redo action icons.
+
+= 2.0.8 - January 17 2026 =
+* Fixed minor issues related to padding properties in the HTML module
+* Added vertical and horizontal alignment settings for containers in the Row module
+
+= 2.0.7 - January 06 2026 =
+* Fixed minor issues related to Padding properties in the HTML Module
+* Fixed load page design functionality.
+* Fixed an issue where top-row editing options were not visible.
+
+= 2.0.6 - December 26 2025 =
+* Fixed minor issues related to Margin and Padding properties in the Text Area Module
+* Improved Undo Redo functionality
+
+= 2.0.5 - December 20 2025 =
+* Reverted changes from Release 2.0.4
+
+= 2.0.3 - December 15 2025 =
+* Security improvement
+* Fixed minor bugs related to module properties
+* Compatibility testing with WordPress 6.9
+
+= 2.0.2 - December 05 2025 =
+* Fixed minor issues related to Margin and Padding properties in the Module
+
+= 2.0.1 - December 03 2025 =
+* Improved Documentation
+
+= 2.0 - November 29 2025 =
+
+**Enhancements/Improvements**
+* Relocated the modules and template list from the bottom panel to a new left sidebar for improved UI/UX.
+* Added a new search feature in the left sidebar for faster module discovery.
+* Enhanced the module editing workflow by introducing a popup-based module settings panel with drag-and-drop support.
+ Improved duplication behavior — modules, containers, and entire rows now duplicate directly beneath the original item, ensuring a more intuitive editing flow.
+* Added new Undo/Redo functionality for improved editing control.
+* Introduced separate margin and padding controls for top, right, bottom, and left, with a unified unit selector (px, %).
+* Added width customization options to the Row module with support for px and % units.
+* Reorganized and reassigned Live Composer menu items to create a more intuitive navigation structure.
+* Updated Post Title and Post Thumbnail modules with optional post-linking, allowing users to click and navigate to the associated post.
+* Redesigned the container width and module width option interfaces for clearer control and improved usability.
+* Fixed an issue where the CTRL + S keyboard shortcut was not triggering the save action.
+
 = 1.5.53 - June 30 2025 =
 * Updated support and documentation links.
 * Compatibility with Rank Math plugin.
+
 
 = 1.5.52 - Feb 28 2025 =
 * Reverted changes from Release 1.5.51
@@ -242,7 +315,7 @@ If you're migrating from another page builder, compatibility for content transfe
 * Bug fixed: Background video rendering issue in iPhone
 
 = 1.5.41 - Mar 28 2024 =
-* Compatibility testing with Wordpress 6.5 
+* Compatibility testing with WordPress 6.5 
 
 = 1.5.40 - Mar 27 2024 =
 * Twitter icon replaced with X
@@ -293,7 +366,7 @@ If you're migrating from another page builder, compatibility for content transfe
 * Improved Security
 
 = 1.5.24 - Dec 16 2023 =
-* Tested up to Wordpress 6.4.2
+* Tested up to WordPress 6.4.2
 
 = 1.5.23 - Feb 28 2023 =
 * Improved Security

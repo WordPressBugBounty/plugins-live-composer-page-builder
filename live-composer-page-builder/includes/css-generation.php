@@ -181,6 +181,55 @@ function dslc_custom_css() {
 		$code_to_render[ $post_id ] = $code;
 	}
 
+	/**
+	 * NEW: Pre-scan $code_to_render for DSLC_Section/DSLA_Loops modules.
+	 * This ensures nested template part CSS is queued.
+	 */
+	$nested_sections_code = array();
+	foreach ( $code_to_render as $render_id => $raw_dslc_code ) {
+		$decoded_code = dslc_json_decode( $raw_dslc_code );
+		if ( is_array( $decoded_code ) ) {
+			foreach ( $decoded_code as $row ) {
+				if ( ! isset( $row['content'] ) || ! is_array( $row['content'] ) ) continue;
+				foreach ( $row['content'] as $area ) {
+					if ( ! isset( $area['content'] ) || ! is_array( $area['content'] ) ) continue;
+					foreach ( $area['content'] as $module ) {
+						
+						$t_part_id = false;
+						$required_type = 'section';
+
+						// Check for Section Module
+						if ( isset( $module['module_id'] ) && $module['module_id'] === 'DSLC_Section' ) {
+							$t_part_id = isset( $module['template_id'] ) ? $module['template_id'] : false;
+							$required_type = 'section';
+						} 
+						// ADDED: Check for Loops Module
+						elseif ( isset( $module['module_id'] ) && $module['module_id'] === 'DSLC_Loops' ) {
+							$t_part_id = isset( $module['template_id'] ) ? $module['template_id'] : false;
+							$required_type = 'dslc_post_loop';
+						}
+
+						// Validate and Add to CSS Queue
+						if ( $t_part_id && ! isset( $code_to_render[ $t_part_id ] ) ) {
+							// Only pull CSS if the template is valid and matches the module type
+							if ( dslc_is_template_available( $t_part_id, $required_type ) ) {
+								$t_part_code = get_post_meta( $t_part_id, 'dslc_code', true );
+								if ( $t_part_code ) {
+									$nested_sections_code[ $t_part_id ] = $t_part_code;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Add nested code to the master list before generation begins.
+	if ( ! empty( $nested_sections_code ) ) {
+		$code_to_render = $code_to_render + $nested_sections_code;
+	}
+
 	$fonts_to_output = array();
 
 	if ( 'wp_footer' == current_filter() ) {
@@ -201,7 +250,8 @@ function dslc_custom_css() {
 				// OR outputting CSS for the header/footer.
 				if ( ! dslc_is_editor_active()
 					|| intval( $id ) === intval( $header_id )
-					|| intval( $id ) === intval( $footer_id ) ) {
+					|| intval( $id ) === intval( $footer_id ) 
+					|| get_post_type( $id ) === 'dslc_template_parts' ) {
 
 					// ! is_singular( 'dslc_hf' )
 					$dslc_css_style .= "\n\n/*  CSS FOR POST ID: " . $id . " */\n";
@@ -547,6 +597,11 @@ function dslc_generate_module_css( $module_structure, $module_settings, $restart
 	$module_settings = apply_filters( 'dslc_module_settings_before_cssgen', $module_settings );
 	$module_structure = apply_filters( 'dslc_module_structure_before_cssgen', $module_structure );
 
+	// --- FIX: Execute Consolidated Value Migration HERE ---
+    // This is the critical step that migrate old vertical and horizontal margin and padding values into new seperate values
+    // the main loop below to find them when iterating over $module_structure.
+	$module_settings = dslc_process_consolidated_css_values( $module_settings );
+
 	$css_output = '';
 	global $dslc_googlefonts_array;
 	$regular_fonts = array( 'Georgia', 'Times', 'Arial', 'Lucida Sans Unicode', 'Tahoma', 'Trebuchet MS', 'Verdana', 'Helvetica' );
@@ -606,6 +661,13 @@ function dslc_generate_module_css( $module_structure, $module_settings, $restart
 				$ext = ' ';
 				if ( isset( $option_arr['ext'] ) ) {
 					$ext = $option_arr['ext'];
+					
+					// If the control is a dimensional slider (margin, padding, width), 
+					// resolve the unit dynamically from the saved settings using the helper.
+					$ext = lc_get_dynamic_unit( $option_id, $module_settings, $ext );
+					
+					// --- END DYNAMIC UNIT RESOLUTION ---
+
 				}
 
 				// Prepend.
@@ -896,4 +958,43 @@ function dslc_helper_is_border_radius( $property_name ) {
 	} else {
 		return false;
 	}
+}
+/**
+ * Resolves the unit (px, %, em) for a dimensional CSS property
+ * by looking up the value of its associated unit selector control.
+ *
+ * This logic predicts the unit selector ID (e.g., 'css_padding_unit') 
+ * from the dimensional slider ID (e.g., 'css_padding_top').
+ *
+ * @param string $dimensional_control_id The ID of the dimensional control (e.g., 'css_padding_top').
+ * @param array $module_settings All saved settings for the current module.
+ * @param string $default_unit The static default unit to use as a fallback (usually 'px').
+ * @return string The resolved unit.
+ */
+function lc_get_dynamic_unit( $dimensional_control_id, $module_settings, $default_unit ) {
+
+    // Define the dimensional suffixes that need to be stripped.
+    $dimensional_suffixes = ['_top', '_right', '_bottom', '_left'];
+    
+    // Check if the ID contains a dimensional property we manage.
+	if (
+		strpos( $dimensional_control_id, '_padding' ) === false &&
+		strpos( $dimensional_control_id, '_margin' ) === false
+	) {
+		return $default_unit;
+	}
+
+    // 1. Normalize the ID (strip direction)
+    // E.g., 'css_header_margin_bottom' becomes 'css_header_margin'
+    $normalized_id = str_replace( $dimensional_suffixes, '', $dimensional_control_id );
+
+    // 2. Predict the Unit Selector ID by appending '_unit'
+    // E.g., 'css_header_margin' becomes 'css_header_margin_unit'
+    $unit_selector_id = $normalized_id . '_unit';
+
+    // 3. Look up the value in the saved settings
+    if ( isset( $module_settings[ $unit_selector_id ] ) && ! empty( $module_settings[ $unit_selector_id ] ) ) {
+        return $module_settings[ $unit_selector_id ];
+    }
+    return $default_unit;
 }

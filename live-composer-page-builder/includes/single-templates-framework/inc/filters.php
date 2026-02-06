@@ -134,7 +134,8 @@ function dslc_templates_col_content( $column_name, $post_ID ) {
 				$post_types[$key] = __('Downloads', 'live-composer-page-builder' );
 			} elseif ( 'dslc_galleries' === $value) {
 				$post_types[$key] = __('Galleries', 'live-composer-page-builder' );
-
+			} elseif ( 'post_archive' === $value) {
+				$post_types[$key] = __('Post Archive', 'live-composer-page-builder' );
 			} elseif ( 'dslc_projects_archive' === $value) {
 				$post_types[$key] = __('Projects Archive', 'live-composer-page-builder' );
 			} elseif ( 'dslc_staff_archive' === $value) {
@@ -149,7 +150,7 @@ function dslc_templates_col_content( $column_name, $post_ID ) {
 				unset( $post_types[$key] );
 			}
 		}
-
+		sort($post_types);
 		$cpt_col_val = '<ul><li> – ';
 		$cpt_col_val .= implode('</li><li> – ', $post_types);
 		$cpt_col_val .= '</li></ul>';
@@ -480,3 +481,40 @@ function dslc_refresh_template_ids() {
 		dslc_tp_update_archive_templates_option( $template_id );
 	}
 }
+/**
+ * 1. Define the Columns for Template Parts Table
+ */
+function dslc_template_parts_columns( $columns ) {
+        
+    $new_columns = array(
+        'cb'        => '<input type="checkbox" />', // The checkbox for bulk actions
+        'title'     => __( 'Title', 'live-composer-page-builder' ),
+        'type' => __( 'Type', 'live-composer-page-builder' ),
+        'date'      => __( 'Date', 'live-composer-page-builder' ),
+    );
+
+    return $new_columns;
+}
+add_filter( 'manage_dslc_template_parts_posts_columns', 'dslc_template_parts_columns' );
+
+function dslc_template_parts_columns_content( $column, $post_id ) {
+    
+    if ( 'type' === $column ) {
+
+        // Get checkbox meta
+        $template_for = get_post_meta( $post_id, 'dslc_template_part_for', true );
+
+        if ( ! empty( $template_for ) ) {
+            echo '<strong>Loop</strong>';
+        } else {
+            echo '<strong>Section</strong>';
+        }
+    }
+}
+add_action( 'manage_dslc_template_parts_posts_custom_column', 'dslc_template_parts_columns_content', 10, 2 );
+
+function dslc_template_parts_sortable_columns( $columns ) {
+    $columns['type'] = 'type';
+    return $columns;
+}
+add_filter( 'manage_edit-dslc_template_parts_sortable_columns', 'dslc_template_parts_sortable_columns' );

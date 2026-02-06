@@ -15,7 +15,7 @@
 /**
  * CODE GENERATION - Save Page Changes
  */
-function dslc_save_composer() {
+export function dslc_save_composer() {
 	if ( window.dslcDebug ) console.log( 'dslc_save_composer' );
 	/**
 	 * Before saving code via ajax
@@ -92,7 +92,7 @@ function dslc_save_composer() {
 /**
  * CODE GENERATION - Save Draft
  */
-function dslc_save_draft_composer() {
+export function dslc_save_draft_composer() {
 
 	if ( window.dslcDebug ) console.log( 'dslc_save_draft_composer' );
 
@@ -197,6 +197,11 @@ window.dslc_generate_code = function() {
 	jQuery('#dslc-main .dslc-modules-section', LiveComposer.Builder.PreviewAreaDocument).each(function(){
 
 		modulesSection = jQuery(this);
+		/** * NEW: Skip if this row is part of a template part preview 
+     	*/
+		if ( modulesSection.closest('.dslc-template-preview-content').length > 0 ) {
+			return; // Skip this iteration
+		}
 
 		modulesSectionJson = generateSectionCode( modulesSection );
 
@@ -383,6 +388,11 @@ export const generateSectionCode = ( theModulesSection ) => {
 		jQuery('.dslc-module-front', modulesArea).each(function(){
 
 			var dslc_module = jQuery(this);
+			/** * NEW: Skip if this module is part of a template part preview 
+			 */
+			if ( dslc_module.closest('.dslc-template-preview-content').length > 0 ) {
+				return; // Skip this iteration
+			}
 
 			// Vars
 			module_size = parseInt( dslc_module[0].getAttribute('data-dslc-module-size') );
@@ -521,6 +531,19 @@ const setEventListeners = () => {
 			dslc_save_draft_composer();
 		}
 	});
+	/**
+	 * Hook - Undo/Redo
+	 */
+	jQuery(document).on('click', '.dslca-history-undo', function(e) {
+		e.preventDefault();
+		LiveComposer.Builder.Actions.undo();
+	});
+
+	jQuery(document).on('click', '.dslca-history-redo', function(e) {
+		e.preventDefault();
+		LiveComposer.Builder.Actions.redo();
+	});
+
 }
 
 /**
@@ -601,4 +624,62 @@ export const editableContentCodeGeneration = ( dslcField ) => {
 
 export const codeGenerationInitJS = () => {
 	setEventListeners();
+}
+
+/**
+ * Progress Bar function 
+ */
+let creepInterval;
+
+export function updateProgress(percent) {
+    const bars = document.getElementsByClassName('dslca-progress-bar');
+    const containers = document.getElementsByClassName('dslca-container-loader');
+    
+    if (containers.length === 0) return;
+
+    clearInterval(creepInterval);
+
+    // Show/Display the containers
+    for (let i = 0; i < containers.length; i++) {
+        if (percent > 0 && percent < 100) {
+            containers[i].style.display = 'block';
+            // Use a small timeout for the opacity transition to trigger correctly
+            setTimeout(() => { containers[i].style.opacity = '1'; }, 10);
+        }
+    }
+
+    const updateWidth = (w) => {
+        for (let j = 0; j < bars.length; j++) {
+            bars[j].style.width = w + '%';
+        }
+    };
+
+    updateWidth(percent);
+
+    // If we are between 1% and 94%, start a slow increment so it looks active
+    if (percent > 0 && percent < 95) {
+        let currentPercent = percent;
+        creepInterval = setInterval(() => {
+            if (currentPercent < 95) {
+                currentPercent += 0.1; 
+                updateWidth(currentPercent);
+            }
+        }, 200);
+    }
+
+    if (percent >= 100) {
+        updateWidth(100);
+
+        setTimeout(() => {
+            for (let i = 0; i < containers.length; i++) {
+                containers[i].style.opacity = '0';
+                
+                setTimeout(() => {
+                    containers[i].style.display = 'none';
+                    // Reset for the next call
+                    updateWidth(0);
+                }, 400); // Wait for opacity fade
+            }
+        }, 500);
+    }
 }

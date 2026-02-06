@@ -59,6 +59,8 @@ const loadTemplateById = ( template ) => {
 			dragAndDropInit();
 			window.dslc_show_publish_button();
 			window.dslc_generate_code();
+			LiveComposer.Builder.History.unlock();
+			parent.LiveComposer.Builder.Actions.saveState();
 		}
 	);
 }
@@ -104,6 +106,8 @@ function dslc_template_import() {
 			dragAndDropInit();
 			window.dslc_show_publish_button();
 			window.dslc_generate_code();
+			LiveComposer.Builder.History.unlock();
+			parent.LiveComposer.Builder.Actions.saveState();
 		}
 	);
 }
@@ -113,6 +117,9 @@ function dslc_template_import() {
  */
 function dslc_template_save() {
 	if ( window.dslcDebug ) console.log( 'dslc_save_template' );
+
+	jQuery('.dslca-modal-templates-save .dslca-modal-title').css({ opacity : 0 });
+	jQuery('.dslca-modal-templates-save .dslca-loading').show();
 
 	// AJAX call to save the template
 	jQuery.post(
@@ -125,6 +132,8 @@ function dslc_template_save() {
 			dslc_template_title : jQuery('#dslca-save-template-title').val()
 		},
 		function( response ) {
+			jQuery('.dslca-modal-templates-save .dslca-loading').hide();
+			jQuery('.dslca-modal-templates-save .dslca-modal-title').css({ opacity : 1 });
 			// Hide the modal
 			hideModal( '', '.dslca-modal-templates-save' );
 		}
@@ -153,6 +162,8 @@ function dslc_template_delete( template ) {
 			// Remove template from the template listing
 			jQuery('.dslca-template[data-id="' + template + '"]').fadeOut(200, function(){
 				jQuery(this).remove();
+				LiveComposer.Builder.History.unlock();
+				parent.LiveComposer.Builder.Actions.saveState();
 			});
 		}
 	);

@@ -69,6 +69,35 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				),
 			),
 			array(
+				'label' => __( 'Use Post Content When No Excerpt', 'live-composer-page-builder' ),
+				'id' => 'enable_post_content',
+				'std' => 'disabled',
+				'type' => 'select',
+				'help' => __( 'Applies only when no manual excerpt is set.', 'live-composer-page-builder' ),
+				'choices' => array(
+					array(
+						'label' => __( 'Enabled', 'live-composer-page-builder' ),
+						'value' => 'enabled',
+					),
+					array(
+						'label' => __( 'Disabled', 'live-composer-page-builder' ),
+						'value' => 'disabled',
+					),
+				),
+			),
+			array(
+				'label' => __( 'Content Preview Length (Words)', 'live-composer-page-builder' ),
+				'id' => 'content_word_limit',
+				'onlypositive' => true,
+				'min' => -2000,
+				'max' => 2000,
+				'std' => '30',
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+			),
+			array(
 				'label' => __( 'BG Color', 'live-composer-page-builder' ),
 				'id' => 'css_bg_color',
 				'std' => '',
@@ -93,6 +122,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_border_width',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -133,6 +164,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_border_radius_top',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -145,6 +178,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_border_radius_bottom',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -153,21 +188,101 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'ext' => 'px',
 			),
 			array(
-				'label' => __( 'Margin Bottom', 'live-composer-page-builder' ),
+				'label' => __( 'Margin', 'live-composer-page-builder' ),
+				'id' => 'css_margin_group',
+				'type' => 'group',
+				'action' => 'open',
+				'section' => 'responsive',
+			),
+			array(
+				'id' => 'css_margin_unit',
+				'std' => 'px',
+				'label' => __( 'Margin Unit', 'live-composer-page-builder' ),
+				'type' => 'select',
+				'refresh_on_change' => false,
+				'choices' => array(
+					array(
+						'label' => 'px',
+						'value' => 'px',
+					),
+					array(
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+				'section' => 'responsive',
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+			),
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'id' => 'css_margin_top',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
+				'std' => '0',
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-top',
+				'section' => 'responsive',
+				'ext' => 'px',
+			),
+			array(
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
 				'id' => 'css_margin_bottom',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
 				'affect_on_change_rule' => 'margin-bottom',
-				'section' => 'styling',
+				'section' => 'responsive',
 				'ext' => 'px',
+			),
+			array(
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'id' => 'css_margin_left',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-left',
+				'section' => 'responsive',
+				'ext' => 'px',
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'id' => 'css_margin_right',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-right',
+				'section' => 'responsive',
+				'ext' => 'px',
+			),
+			array(
+				'id' => 'css_margin_group',
+				'type' => 'group',
+				'action' => 'close',
+				'section' => 'responsive',
 			),
 			array(
 				'label' => __( 'Minimum Height', 'live-composer-page-builder' ),
 				'id' => 'css_min_height',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -177,29 +292,94 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'increment' => 5,
 			),
 			array(
-				'label' => __( 'Padding Vertical', 'live-composer-page-builder' ),
-				'id' => 'css_padding_vertical',
+				'label' => __( 'Padding', 'live-composer-page-builder' ),
+				'id' => 'css_padding_group',
+				'type' => 'group',
+				'action' => 'open',
+				'section' => 'styling',
+			),
+			array(
+				'id' => 'css_padding_unit',
+				'std' => 'px',
+				'label' => __( 'Padding Unit', 'live-composer-page-builder' ),
+				'type' => 'select',
+				'refresh_on_change' => false,
+				'choices' => array(
+					array(
+						'label' => 'px',
+						'value' => 'px',
+					),
+					array(
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+				'section' => 'styling',
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+			),
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'id' => 'css_padding_top',
 				'onlypositive' => true, // Value can't be negative.
-				'max' => 600,
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
-				'affect_on_change_rule' => 'padding-top,padding-bottom',
+				'affect_on_change_rule' => 'padding-top',
 				'section' => 'styling',
 				'ext' => 'px',
 			),
 			array(
-				'label' => __( 'Padding Horizontal', 'live-composer-page-builder' ),
-				'id' => 'css_padding_horizontal',
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
+				'id' => 'css_padding_bottom',
 				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
-				'affect_on_change_rule' => 'padding-left,padding-right',
+				'affect_on_change_rule' => 'padding-bottom',
 				'section' => 'styling',
 				'ext' => 'px',
+			),
+			array(
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'id' => 'css_padding_left',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'padding-left',
+				'section' => 'styling',
+				'ext' => 'px',
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'id' => 'css_padding_right',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'padding-right',
+				'section' => 'styling',
+				'ext' => 'px',
+			),
+			array(
+				'label' => __( 'Padding', 'live-composer-page-builder' ),
+				'id' => 'css_padding_group',
+				'type' => 'group',
+				'action' => 'close',
+				'section' => 'styling',
 			),
 
 			/**
@@ -222,6 +402,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_font_size',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '14',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -296,6 +478,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_line_height',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '26',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -350,49 +534,205 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
 			),
 			array(
-				'label' => __( 'Margin Bottom', 'live-composer-page-builder' ),
+				'label' => __( 'Margin', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_margin_group',
+				'type' => 'group',
+				'action' => 'open',
+				'section' => 'responsive',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'id' => 'css_res_t_margin_unit',
+				'std' => 'px',
+				'label' => __( 'Margin Unit', 'live-composer-page-builder' ),
+				'type' => 'select',
+				'refresh_on_change' => false,
+				'choices' => array(
+					array(
+						'label' => 'px',
+						'value' => 'px',
+					),
+					array(
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+				'section' => 'responsive',
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_margin_top',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
+				'std' => '0',
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-top',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
 				'id' => 'css_res_t_margin_bottom',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
 				'affect_on_change_rule' => 'margin-bottom',
 				'section' => 'responsive',
-				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
 				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
 			),
 			array(
-				'label' => __( 'Padding Vertical', 'live-composer-page-builder' ),
-				'id' => 'css_res_t_padding_vertical',
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_margin_left',
 				'onlypositive' => true, // Value can't be negative.
-				'max' => 600,
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-left',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_margin_right',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-right',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'id' => 'css_res_t_margin_group',
+				'type' => 'group',
+				'action' => 'close',
+				'section' => 'responsive',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Padding', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_padding_group',
+				'type' => 'group',
+				'action' => 'open',
+				'section' => 'responsive',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'id' => 'css_res_t_padding_unit',
+				'std' => 'px',
+				'label' => __( 'Padding Unit', 'live-composer-page-builder' ),
+				'type' => 'select',
+				'refresh_on_change' => false,
+				'choices' => array(
+					array(
+						'label' => 'px',
+						'value' => 'px',
+					),
+					array(
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+				'section' => 'responsive',
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_padding_top',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
-				'affect_on_change_rule' => 'padding-top,padding-bottom',
+				'affect_on_change_rule' => 'padding-top',
 				'section' => 'responsive',
-				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
 				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
 			),
 			array(
-				'label' => __( 'Padding Horizontal', 'live-composer-page-builder' ),
-				'id' => 'css_res_t_padding_horizontal',
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_padding_bottom',
 				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
-				'affect_on_change_rule' => 'padding-left,padding-right',
+				'affect_on_change_rule' => 'padding-bottom',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_padding_left',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'padding-left',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_padding_right',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'padding-right',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Padding', 'live-composer-page-builder' ),
+				'id' => 'css_res_t_padding_group',
+				'type' => 'group',
+				'action' => 'close',
 				'section' => 'responsive',
 				'tab' => __( 'Tablet', 'live-composer-page-builder' ),
-				'ext' => 'px',
 			),
 			array(
 				'label' => __( 'Font Size', 'live-composer-page-builder' ),
 				'id' => 'css_res_t_font_size',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '14',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -406,6 +746,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_res_t_line_height',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '26',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -438,49 +780,205 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'tab' => __( 'Phone', 'live-composer-page-builder' ),
 			),
 			array(
-				'label' => __( 'Margin Bottom', 'live-composer-page-builder' ),
+				'label' => __( 'Margin', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_margin_group',
+				'type' => 'group',
+				'action' => 'open',
+				'section' => 'responsive',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'id' => 'css_res_p_margin_unit',
+				'std' => 'px',
+				'label' => __( 'Margin Unit', 'live-composer-page-builder' ),
+				'type' => 'select',
+				'refresh_on_change' => false,
+				'choices' => array(
+					array(
+						'label' => 'px',
+						'value' => 'px',
+					),
+					array(
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+				'section' => 'responsive',
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_margin_top',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
+				'std' => '0',
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-top',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
 				'id' => 'css_res_p_margin_bottom',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
 				'affect_on_change_rule' => 'margin-bottom',
 				'section' => 'responsive',
-				'tab' => __( 'Phone', 'live-composer-page-builder' ),
 				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
 			),
 			array(
-				'label' => __( 'Padding Vertical', 'live-composer-page-builder' ),
-				'id' => 'css_res_p_padding_vertical',
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_margin_left',
 				'onlypositive' => true, // Value can't be negative.
-				'max' => 600,
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-left',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_margin_right',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'margin-right',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'id' => 'css_res_p_margin_group',
+				'type' => 'group',
+				'action' => 'close',
+				'section' => 'responsive',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Padding', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_padding_group',
+				'type' => 'group',
+				'action' => 'open',
+				'section' => 'responsive',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'id' => 'css_res_p_padding_unit',
+				'std' => 'px',
+				'label' => __( 'Padding Unit', 'live-composer-page-builder' ),
+				'type' => 'select',
+				'refresh_on_change' => false,
+				'choices' => array(
+					array(
+						'label' => 'px',
+						'value' => 'px',
+					),
+					array(
+						'label' => '%',
+						'value' => '%',
+					),
+				),
+				'section' => 'responsive',
+				'affect_on_change_el' => '',
+				'affect_on_change_rule' => '',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Top', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_padding_top',
+				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
-				'affect_on_change_rule' => 'padding-top,padding-bottom',
+				'affect_on_change_rule' => 'padding-top',
 				'section' => 'responsive',
-				'tab' => __( 'Phone', 'live-composer-page-builder' ),
 				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
 			),
 			array(
-				'label' => __( 'Padding Horizontal', 'live-composer-page-builder' ),
-				'id' => 'css_res_p_padding_horizontal',
+				'label' => __( 'Bottom', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_padding_bottom',
 				'onlypositive' => true, // Value can't be negative.
+				'min' => -2000,
+				'max' => 2000,
 				'std' => '0',
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
-				'affect_on_change_rule' => 'padding-left,padding-right',
+				'affect_on_change_rule' => 'padding-bottom',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Left', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_padding_left',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'padding-left',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Right', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_padding_right',
+				'onlypositive' => true, // Value can't be negative.
+				'std' => '0',
+				'min' => -2000,
+				'max' => 2000,
+				'type' => 'slider',
+				'refresh_on_change' => false,
+				'affect_on_change_el' => '.dslc-tp-excerpt',
+				'affect_on_change_rule' => 'padding-right',
+				'section' => 'responsive',
+				'ext' => 'px',
+				'tab' => __( 'Phone', 'live-composer-page-builder' ),
+			),
+			array(
+				'label' => __( 'Padding', 'live-composer-page-builder' ),
+				'id' => 'css_res_p_padding_group',
+				'type' => 'group',
+				'action' => 'close',
 				'section' => 'responsive',
 				'tab' => __( 'Phone', 'live-composer-page-builder' ),
-				'ext' => 'px',
 			),
 			array(
 				'label' => __( 'Font Size', 'live-composer-page-builder' ),
 				'id' => 'css_res_p_font_size',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '14',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -494,6 +992,8 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 				'id' => 'css_res_p_line_height',
 				'onlypositive' => true, // Value can't be negative.
 				'std' => '26',
+				'min' => -2000,
+				'max' => 2000,
 				'type' => 'slider',
 				'refresh_on_change' => false,
 				'affect_on_change_el' => '.dslc-tp-excerpt',
@@ -524,32 +1024,94 @@ class DSLC_TP_Excerpt extends DSLC_Module {
 	 */
 	function output( $options ) {
 
-		global $dslc_active;
+	global $dslc_active;
+	global $post;
 
-		$post_id = $options['post_id'];
+	$post_id = isset( $options['post_id'] ) ? (int) $options['post_id'] : 0;
 
-		if ( $dslc_active && is_user_logged_in() && current_user_can( DS_LIVE_COMPOSER_CAPABILITY ) ) {
-			$dslc_is_admin = true;
-		} else { $dslc_is_admin = false;
-		}
+	if (
+		isset( $post )
+		&& is_object( $post )
+		&& isset( $post->ID )
+	) {
+		$post_id = (int) $post->ID;
+	}
 
-		if ( $dslc_is_admin ) {
-			$the_excerpt = __( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'live-composer-page-builder' );
-		} else { $the_excerpt = false;
-		}
+	$post_type = get_post_type( $post_id );
 
-		if ( is_singular() && get_post_type() !== 'dslc_templates' && has_excerpt() ) {
-			$post_id = get_the_ID();
-			$post = get_post( $post_id );
-			$the_excerpt = apply_filters( 'get_the_excerpt', $post->post_excerpt );
-		}
+	$is_template = in_array(
+		$post_type,
+		array( 'dslc_templates', 'dslc_template_parts' ),
+		true
+	);
+	
+	if ( $is_template ) {
 
-		/* Module output starts here */
-
-		if ( $the_excerpt ) :
-			?><div class="dslc-tp-excerpt"><?php echo $the_excerpt; ?></div><?php
-			endif;
+		$the_excerpt = '
+			<p>
+				This is an example excerpt text. It gives a short preview of how
+				the excerpt will look when displayed on the site. You can style
+				this text while designing your template.
+			</p>
+		';
 
 	}
+	else{
+		
+		$the_excerpt = false;
+		$use_content_fallback = (
+			isset( $options['enable_post_content'] )
+			&& $options['enable_post_content'] === 'enabled'
+		);
+
+		$word_limit = isset( $options['content_word_limit'] ) && (int) $options['content_word_limit'] > 0
+			? (int) $options['content_word_limit']
+			: 30;
+
+		if ( has_excerpt( $post_id ) ) {
+
+			$post_obj = get_post( $post_id );
+			if ( $post_obj ) {
+				$the_excerpt = apply_filters( 'get_the_excerpt', $post_obj->post_excerpt );
+			}
+
+		// Fallback to content if enabled
+		} elseif ( $use_content_fallback ) {
+
+			$post_obj = get_post( $post_id );
+			if ( $post_obj && ! empty( $post_obj->post_content ) ) {
+
+				$clean_content = wp_strip_all_tags(
+					strip_shortcodes( $post_obj->post_content )
+				);
+
+				$clean_content = trim( preg_replace( '/\s+/', ' ', $clean_content ) );
+
+				$the_excerpt = wp_trim_words(
+					$clean_content,
+					$word_limit,
+					'...'
+				);
+			}
+		}
+	}
+
+	/* Module output starts here */
+
+	if ( $the_excerpt ) :
+		?>
+		<div class="dslc-tp-excerpt">
+			<?php
+			if ( $is_template ) {
+				echo $the_excerpt;
+			} else {
+				echo esc_html( $the_excerpt );
+			}
+			?>
+		</div>
+		<?php
+	endif;
+}
+
 
 }
